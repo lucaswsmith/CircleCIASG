@@ -20,7 +20,7 @@ jobs:
           command: |
               echo "my script"
               python -V
-              aws help
+              aws s3 ls --region us-west-2 --output json
       - run:
           command: npm run test
 workflows:
