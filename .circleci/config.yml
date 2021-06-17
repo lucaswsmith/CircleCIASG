@@ -5,22 +5,21 @@ orbs:
   # Declare a dependency on the welcome-orb
   welcome: circleci/welcome-orb@0.4.1
   aws-cli: circleci/aws-cli@2.0
-  node: circleci/node@4.5.1
+  python: circleci/python@1.4.0
+
 
 # Orchestrate or schedule a set of jobs
 jobs:
   test:
-    executor:
-      name: node/default # From the node orb, provides a nodejs docker image
-      tag: '13'
+    executor: python/default
     steps:
       - checkout #standard CircleCI command to checkout code
       - aws-cli/setup
-      - node/install-packages # from the node orb. Installs and caches our npm modules
       - run:
           name: my custom script
           command: |
               echo "my script"
+              pytest --version
       - run:
           command: npm run test
 workflows:
