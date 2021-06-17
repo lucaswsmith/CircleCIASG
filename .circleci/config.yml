@@ -19,7 +19,8 @@ jobs:
           name: my custom script
           command: |
               echo "my script"
-              pytest --version
+              python -V
+              aws help
       - run:
           command: npm run test
 workflows:
