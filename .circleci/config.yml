@@ -20,9 +20,10 @@ jobs:
           command: |
               echo "my script"
               python -V
+              ls -al
+              bucket=circleci_fepasnfioesniosdngrsd
               aws s3 ls --region us-west-2 --output json
-      - run:
-          command: npm run test
+              aws s3api create-bucket --bucket $bucket --acl private
 workflows:
   test_my_app:
     jobs:
