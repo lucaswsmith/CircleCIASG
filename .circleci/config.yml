@@ -5,31 +5,26 @@ orbs:
   # Declare a dependency on the welcome-orb
   welcome: circleci/welcome-orb@0.4.1
   aws-cli: circleci/aws-cli@2.0
+  node: 'circleci/node:x.y' #importing the node orb here. The version referrs to the version of the orb.
+
 # Orchestrate or schedule a set of jobs
 jobs:
-  aws-cli-example:
-    executor: aws-cli/default
+  test:
+    executor:
+      name: node/default # From the node orb, provides a nodejs docker image
+      tag: '13'
     steps:
-      - checkout
-      - aws-cli/setup:
-          profile-name: example
-      - run: echo "Run your code here"
-      - run2:
-          name: check_aws_version
+      - checkout #standard CircleCI command to checkout code
+      - aws-cli/setup
+      - node/install-packages # from the node orb. Installs and caches our npm modules
+      - run:
+          name: my custom script
           command: |
-            if [ -n "<<parameters.version>>" ]; then
-              INSTALLED_AWS_VERSION="$(aws --version)"
-              aws --version | grep <<parameters.version>>
-            else
-              if ! command -v aws &> /dev/null; then exit 1; else exit 0; fi
-            fi
+              echo "my script"
+      - run:
+          command: npm run test
 workflows:
-  aws-cli:
+  test_my_app:
     jobs:
-      - aws-cli-example:
-          context: aws
-  welcome:
-    # Run the welcome/run job in its own container
-    jobs:
-      - run
-      - run2
+      - test
+
