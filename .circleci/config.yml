@@ -6,13 +6,6 @@ orbs:
   welcome: circleci/welcome-orb@0.4.1
   aws-cli: circleci/aws-cli@2.0
 # Orchestrate or schedule a set of jobs
-workflows:
-  # Name the workflow "welcome"
-  welcome:
-    # Run the welcome/run job in its own container
-    jobs:
-      - welcome/run
-version: '2.1'
 jobs:
   aws-cli-example:
     executor: aws-cli/default
@@ -26,3 +19,7 @@ workflows:
     jobs:
       - aws-cli-example:
           context: aws
+  welcome:
+    # Run the welcome/run job in its own container
+    jobs:
+      - welcome/run
